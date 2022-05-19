@@ -1,0 +1,35 @@
+ondrive를 연동해두지 않았더니 저장된 
+csv파일을 못찾아서 시작하는데 시간이 좀 걸렸다.
+
+
+df['news'].unique()
+news열에 있는 값을 unique 같은 내용이 없는 곳을 출력하게 해준다.
+df[‘news’].nunique()
+news열에 있는 값중 중복이 없는 내용의 숫자를 세고 다음 보여준다
+df.drop_duplicates(subset=['news'], inplace = True)
+news열에 중복값을 제거한다. 괄호 안에 inplace = true를 넣을시 변경내용이 저장되고
+넣지 않는다면 변경이 없이 결과 값만 보여주고 끝이난다. 
+from konlpy.tag import Okt
+tokenizer = Okt()
+
+tokenizer.nouns(주로 같은거 없이 명사만을 출력하여 준다. 밤, 단위 등)
+분석할 때 쓸 때 없는 것들을 불용서 stop words 라고 부른다.
+
+apply(lambda x
+almbda를 쓴다면 행을 x라고 정해놓고 작업을 한다.
+
+import numpy as np
+df[df['code'] == '사회']['tokenized'].values
+방대한 데이터를 명사로 나누고 싶었는데
+이렇게 쓴다면 리스트그 자체들이 리스트로 묶여있는 것으로 나온다.
+
+numpy.hastak(리스트 함수입력) 쓴다면 리스트 안에 리스트들을 하나의 리스트로 만들어준다.
+
+from collections import Counter 리스트 안에 들어있는 단어들의 숫자를 새기 위해 사용한다.
+
+social_news_count = Counter(social_news)
+print(social_news_count.most_common(5))
+여기서 most_common을 쓰면 상위 몇 번째 까지 보여줄 것인지 괄호 안에
+숫자를 넣어주면 저기 적힌대로 5번째라거나 10을 입력하면 10번째 까지 보여준다.
+
+오늘은 2주차 첫번째만 들었는데 오늘은 여기 까지 듣기로 했다.
