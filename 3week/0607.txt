@@ -1,0 +1,113 @@
+3주차 제대로 시작하기전 복습하는 두 번째 수업(2022.06.01)
+pd.csv_read(url, ‘,’) csv_table이나 csv_read는 똑같이 파일 불러오기이다.
+
+데이터프레임명.head(출력하고 싶은갯수 입력) ad.head(5) 상위 5줄 출력
+데이터프레임명.tail(출력하고 싶은갯수 입력) ad.tail(5) 맨아래 5줄 출력
+데이터프레임명.sample(출력하고 싶은갯수 입력) ad.sample(5) 랜덤으로 5개 출력
+데이터프레임명.index   몇 개의 행이 있는지 궁금할 때 사용하는 함수인 index
+.dyptes 각 열별로 어떤 데이터 타입이 입력되어있는지 나온다(컬럼별)
+.shpae 몇 개의 행과 열의 개수를 알려준다
+.values 행열을 numpy타입으로 변환하여 출력해준다. 리스트 타팁으로 변환하여 준다고 보면된다.
+
+데이터프레임 명.열의 이름 drink_df.beer_servings
+데이터프레임에서해당 열만 불러오게 된다.
+데이터프레임명.info() 열 이름과 non-null의 개수 데이터 타입이 출력된다.
+데이터프레임명.isnull().sum()으로 할시 빈 데이터 개수를 출력해준다.
+데이터프레임명.dropna() 실행시 null데이터는행은 사라지게 된다. drink_df.dropna()
+데이터프레임명.describe()입력시 데이터의 수, 평균, 표준편차, 분위수를 파악하여 출력한다.
+그러나 숫자만 실행이 되는것이므로 문자열을 제외되고 숫자열만 출력이 된다.
+
+데이터프레임명.특정열의이름 ==‘특정값’ 이조건을 만족시 True 아니라면 False값을 리턴한다. 조건문
+
+조건을 만족하면 출력하고 아니라면 출력하지 말고 그조건안에서 상위 5줄만 출력해줘
+데이터프레임명[데이터프레임명.특정열의이름 ==‘특정값’].head(5)
+drink_df[drink_df[‘beer_servings’]>150].head(5)
+
+해당 조건에 만족하면서 원하는 열중 상위 20개만 출력해줘!
+drink_df[drink_df[‘beer_servings’]>150][‘country’,‘beer_serving’].head(20)
+
+평균값을 출력해줘
+drink_df[drink_df[‘beer_servings’]>150].beer_serving.mean()
+
+continent 열에 nan인 열에 해당되는 행만 출력된다.
+drink_df[drink_df[‘continent’].isnull()]
+
+#해당 조건 반대인것만 출력해줘 not 출력
+drink_df[~(drink_df[‘beer_servings’]>150]].head(5)
+#and조건문 해당 조건을 전부 만족해야 출력한다.
+drink_df[(drink_df.continent =='EU')&(drink_df.wine_servings >300)]
+#or조건문 해당 조건중에 하나만 만족해도 출력한다.
+drink_df[(drink_df.continent =='EU')|(drink_df.wine_servings >300)].head(6)
+
+drink_df에서 total_litres_of_pure_alchohol의 값이 최대값인 경우의 country 열을 출력해봅시다.
+drink_df[drink_df.total_litres_of_pure_alcohol == drink_df.total_litres_of_pure_alcohol.max()]['country'].head(6)
+이번에는 drink_df에서 wine_servings의 값이 300보다 크거나, beer_servings의 값이 300보다 크거나, spirit_servings의 값이 300보다 큰 경우의 country열의 데이터를 모두 카운트하였을 때의 숫자를 출력해봅시다. 이를 구현하기 위해서 고려해야할 것은 총 두 가지입니다.
+drink_df[(drink_df.wine_servings >300) | (drink_df.beer_servings > 300) | (drink_df.spirit_servings > 300)]['country'].count()
+
+두 개의 열을 기준으로 정렬 할때는 앞에 기준으로 정렬한후에 다음 기준으로 앞에 정렬을 해치지 않는 선에서 다시 할 수 있는 것을 정렬한다.
+# 2개의 열을 기준으로 정렬
+drink_df.sort_values(['beer_servings', 'wine_servings'])
+
+
+3주차 4번째 수업 상관관계 그래프?(2202.06.06.)
+
+#상관관계를 구할건데 pearson상관 관계를 구할것이다.
+corr = test_df.corr(method = 'pearson')
+corr
+
+#산점도(상관관계를 확인하는 방법중 하나)
+sns.pairplot(데이터 프레임)
+
+null값을 제거 하기위해선 dropna()를 썻으나 null(비어있는부분)을 특정값을 채우는 것은 .fillna()를 사용한다.
+.fillna(‘fill’)
+
+#각 값들을 카운트 한 개수를 확인해준다 컬럼안에 해당 내용을 카운트
+.value_counts()
+
+#제일 값이 높은 행 이름을 출력해줌
+.mean().idxmax()
+
+folium 함수에 뭔가 띄우기 위해서는 plugins함수가 필요하다
+들어가는 컬럼의 내용들은 다 숫자여야만 한다.
+S_korea.add_child(plugins.HeatMap(zip(local_infected['latitude'], local_infected['longitude'], local_infected['confirmed'])))
+
+어떠한 요소를 추가하겠다.
+숙제하면서 한거
+컬럼의 이름을 변경
+df.rename(columns = {'sepal length (cm)':'sepal_length', 'sepal width (cm)':'sepal_width','petal length (cm)':'petal_length','petal width (cm)':'petal_width'},inplace = True)
+#df.columns = {'sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species'}
+df.head(3)
+
+2주차에 한것처럼 분석하는줄 알았는데
+df.corr
+상관관계 분석이였다
+import seaborn as sns
+import matplotlib.pyplot as plt
+plt.figure(figsize = (8,8))
+sns.heatmap(df[['sepal_length',	'sepal_width',	'petal_length',	'petal_width']].corr(), annot = True)
+
+
+df['petal_width'].plot(kind='hist')
+plt.title('Iris Petal Width', fontsize=14, y=1.01)
+plt.ylabel('Value')
+plt.xlabel('Width')
+
+#숫자를 문자로 다시 변경하는방법
+df['species'].replace({0:"setosa", 1: "vesicolor", 2:'virginica'}, inplace=True)
+
+pie_labels = df['species'].unique()
+print(pie_labels)
+
+#내용중 중복 제거 후 출력하는방법
+pie_labels = df['species'].value_counts().index.tolist()
+df['species'].unique().tolist()#위와같은결과가나오긴한다.
+#각 내용의 갯수를 세서 출력하는 방법
+pie_values = df['species'].value_counts().values.tolist() 
+plt.pie(pie_values, labels=pie_labels, autopct='%.2f%%')
+plt.title('Percentage of each species')
+plt.show()
+
+sns.set(style = 'whitegrid')
+sns.pairplot(df, hue="species")
+plt.show()
+
