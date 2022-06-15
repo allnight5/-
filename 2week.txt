@@ -1,0 +1,130 @@
+2주차
+
+df['news'].unique()
+news열에 있는 값을 unique 같은 내용이 없는 곳을 출력하게 해준다.
+df[‘news’].nunique()
+news열에 있는 값중 중복이 없는 내용의 숫자를 세고 다음 보여준다
+df.drop_duplicates(subset=['news'], inplace = True)
+news열에 중복값을 제거한다. 괄호 안에 inplace = true를 넣을시 변경내용이 저장되고
+넣지 않는다면 변경이 없이 결과 값만 보여주고 끝이난다.
+
+형태소 분석
+한국어 텍스트를 처리할 때는 주로 형태소 분석기를 사용하여 자연어 처리를 한다.
+이를 문장보다 작은 단위인 토큰 단위로 뽑아 냈다고 하여 토큰화 라고 부른다.
+from konlpy.tag import Okt
+tokenizer = Okt()
+
+tokenizer.nouns(주로 같은거 없이 명사만을 출력하여 준다. 밤, 단위 등)
+분석할 때 쓸 때 없는 것들을 불용서 stop words 라고 부른다.
+
+apply(lambda x
+almbda를 쓴다면 행을 x라고 정해놓고 작업을 한다.
+
+import numpy as np
+df[df['code'] == '사회']['tokenized'].values
+방대한 데이터를 명사로 나누고 싶었는데
+이렇게 쓴다면 리스트그 자체들이 리스트로 묶여있는 것으로 나온다.
+
+numpy.hastak(리스트 함수입력) 쓴다면 리스트 안에 리스트들을 하나의 리스트로 만들어준다.
+
+from collections import Counter 숫자를 새기 위해 하기 위한 객체이며 함수이다.
+
+social_news_count = Counter(social_news)
+print(social_news_count.most_common(5))
+여기서 most_common을 쓰면 상위 몇 번째 까지 보여줄 것인지 괄호 안에
+숫자를 넣어주면 저기 적힌대로 5번째라거나 10을 입력하면 10번째 까지 보여준다.
+
+2주차 3번째
+
+from wordcloud import WordCloud
+
+# 사용하고자 하는 폰트의 경로. Colab에서는 이 경로를 사용하시면 됩니다.
+fontpath = '/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf'
+
+plt.figure(figsize = (15,15))
+
+wc = WordCloud(max_words = 2000 , width = 1600, height = 800, \
+               font_path = fontpath).generate(temp_data)
+plt.imshow(wc, interpolation = 'bilinear')
+
+이거 무슨생각으로 크롤링을 하라고 한건지 모르겠는데 
+2시간 52분 걸렸다. 이렇게 오래걸리는건 다른 컴퓨터에 두고 할수 있는
+회사같은곳이면 모를가 할당이 한컴퓨터면 이런 작업하면서 수업 어캐듣나
+정말 무슨생각으로 직접 하라고 했는지 모르겠다. 하다가 다른작업 해서 용량 부족하다고
+멈추면 그거 다시 해야하는데 그냥 코드 설명만 하고 csv파일은 뿌려야지
+처음 가르키는 걸까 아니면 지금까지 듣던 사람들은 무식하게 이게 당연하다고
+생각하고 아무말 없이 들은 건지 모르겠다. 다음부터는 설명만 하고 csv 파일
+배포해서 시간 아끼고 가도록 하는 것이 좋다고 본다 이상이다.
+
+불영어 작업(필요없는 내용을 없애는 작업)
+리스트에 필요 없어보이는 내용을 입력하여 적어둔후 .aplly 토큰화 작업을하여
+람다나 조건문으로 내용을 지워준다.
+
+#불용어 제거 작업
+stop_words = ['함께', '자신', '그', '그리고', '그들', '그녀', '다시', '위해', '아버지', '사람', '때문'] # 나만의 불용어 정의
+movies['Content'] = movies['Content'].apply(tokenizer.nouns) # 토큰화 진행 (명사 단위로 나누어 놓아야 불용어인지 아닌지 판별이 가능)
+movies['Content'] = movies['Content'].apply(lambda x: [item for item in x if item not in stop_words and len(item) > 1]) # 불용어 제거
+
+
+
+#2주차 5번째 머신러닝
+
+머신러닝은
+공부시간 *a+b = 성적
+에서 a와 b값을 넣어가면서 
+오차를 줄여가는 작업이다
+기계한테는 글을 이해할수 있게 해줘야한다
+안녕 = 인사하는거다 라고 입력해줘야한다
+백터화를 거쳐서 단어를 숫자로 치환해준다
+의미가 가까우면 3차원 공간에 가까운 위치에 흣뿌리는 것이
+백터화 라고 할 수 있다.
+
+텍스트 분류 단어들의 상대적인 관계를 알려주고 
+기계는 그 단어들의 상대정식 방정식을 만들어 관계에
+얼마나 연관이 있는지 학습해 두는 것이 머신러닝이라고도 할수 있다.
+
+전처리란 ?
+
+DTM(Document-term matrix), TF-IDF 사이킷 런(scikit-learn) 
+머신러닝중 분류라는 것을 하고 있다. 
+(훈련용(학습용) 데이터)fit_transform은 훈련데이터 만들어서 하는데
+저장하면서 백터화를 진행하는 함수다
+만들어진 데이터를 불러와서 사용할수 있다.
+(테스트 데이터)transform 이미 만들어진 데이터 백터값을 보고 백터화를 진행하는 함수로
+저장하면서 진행하지 않고 가져와서 진행하는 것으로 학습하는 것은 생략한다.
+
+2주차 6번째
+from sklearn.naive_bayes import MultinomialNB #다항분포 나이브 베이즈 모델
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score #정확도 계산
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+
+나이브 베이즈 정리 원리
+10개의 행이 있다 맥주를 주문 한사람과 안함 사람들이 섞여있고 시간대별 맥주 주문 여부를 정리해뒀다
+저녁에 와서 맥주를 주문할 확률은 얼마일지 궁금하다. 일 때 이것을 구할 수 있다.
+
+객체를 선언한다는 것은 이 함수를 쓰겠다는 준비단계이다.
+
+로지스틱 회귀(Logistic Regression) 소프트맥스 함수를 사용 예측 값이 모두 합쳐 1이 나온다.
+여러 클래스(장르)가 있을 때 이 클래스가 정답 장르일 확률구해서 계속 최적화(오차를 줄여나가는 작업을한다)를 해나가는 것이다. 그런데 오차를 계속 멈추지 않고 진행할 수 있으니 대략 몇 번까지만 오차를 줄이는 작업을 반복하라고 선언해 줘야한다.
+서포터 벡터 머신(LinearSVC)은 결정 경계라는 선을 그어 분류를 한다.
+잘되었다 해도 여전히 오차는 있을 수 있다.
+ 
+강의에서는 훈련 데이터 / 테스트 데이터가 이미 나누어져 있는 데이터를 사용했었습니다.
+
+그럴 경우 그냥 각각 불러와서 사용하면 됐었지만, 지금 숙제에서는 데이터가 하나의 데이터프레임에 담겨있기 때문에, 이를 직접 훈련 데이터 / 테스트 데이터로 나눠줘야 합니다.
+
+그럴 때 사용할 수 있는 것이 `train_test_split`이라는 함수입니다.
+
+아래처럼 왼쪽에는 x_train, x_test, y_train, y_test 라고 적어주시고, (꼭 4개 다 적어야합니다!)
+
+오른쪽에는 train_test_split(`예측에 사용할 데이터: 여기서는 리뷰 (A)`, `예측할 데이터: 여기서는 긍정/부정 여부 (B)`, test_size = `원하는 테스트 데이터 셋의 크기`) 이렇게 3가지를 명시해주면 됩니다.
+
+그러면 왼쪽에 명시한 변수들인
+
+- x_train (훈련에 사용할 리뷰 데이터)
+- x_test (테스트에 사용할 리뷰 데이터)
+- y_train (훈련에 사용할 긍정/부정 여부)
+- y_test (테스트에 사용할 긍정/부정 여부)
